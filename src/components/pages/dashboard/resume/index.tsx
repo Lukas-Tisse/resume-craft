@@ -12,9 +12,9 @@ import { FormProvider, useForm } from "react-hook-form";
 import { User } from "next-auth";
 import { useDebounce } from "@/hooks/use-debounce";
 import { useCallback, useEffect, useRef } from "react";
-import { updatedResumeData } from "@/db/actions";
 import { useParams } from "next/navigation";
 import { mergician } from "mergician";
+import { updateResumeData } from "@/db/actions";
 
 type ResumePageProps = {
   title: string;
@@ -85,7 +85,7 @@ export const ResumePage = ({ title, initialData, user }: ResumePageProps) => {
 
       const updatedData = methods.getValues();
 
-      updatedResumeData(resumeId, updatedData);
+      updateResumeData(resumeId, updatedData);
     } catch (error) {
       console.error(error);
     }

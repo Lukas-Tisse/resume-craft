@@ -10,8 +10,7 @@
     "db:studio": "npx drizzle-kit studio",
     "db:push": "npx drizzle-kit push",
     "db:generate": "npx drizzle-kit generate",
-    "db:migrate": "tsx ./src/db/migrate.ts",
-    "postinstall": "npm start db:migrate"
+    "db:migrate": "tsx ./src/db/migrate.ts"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.9.1",

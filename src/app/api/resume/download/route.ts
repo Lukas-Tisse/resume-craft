@@ -3,6 +3,7 @@ import { formatTailwindHTML } from "@/lib/utils";
 import puppeteer from "puppeteer";
 import puppeteerCore from "puppeteer-core";
 import chromium from "@sparticuz/chromium";
+import Chromium from "@sparticuz/chromium";
 
 export const POST = async (request: Request) => {
   try {
@@ -23,9 +24,9 @@ export const POST = async (request: Request) => {
     } else {
       browser = await puppeteerCore.launch({
         args: chromium.args,
-        defaultViewport: chromium.defaultViewport,
+        defaultViewport: null,
         executablePath: await chromium.executablePath(),
-        headless: chromium.headless,
+        headless: true,
       });
     }
 

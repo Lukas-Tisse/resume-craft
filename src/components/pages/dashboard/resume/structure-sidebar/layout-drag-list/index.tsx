@@ -1,10 +1,10 @@
 import { Draggable } from "@hello-pangea/dnd";
-import { GripVertical, Languages } from "lucide-react";
+import { GripVertical } from "lucide-react";
 import { useFormContext } from "react-hook-form";
 
 type LayoutDragListProps = {
   title: string;
-  fields: ResumeLayoutSection;
+  fields: ResumeLayoutSection[];
 };
 
 const labels: Record<ResumeSections, Record<ResumeLanguages, string>> = {
@@ -80,9 +80,11 @@ export const LayoutDragList = ({ title, fields }: LayoutDragListProps) => {
   const { watch } = useFormContext<ResumeData>();
 
   const language = watch("structure.language");
+
   return (
     <div className="w-full p-2 bg-muted rounded">
       <p className="font-title text-sm font-bold mb-2">{title}</p>
+
       <div className="flex flex-col gap-2">
         {fields.map((field, index) => (
           <Draggable

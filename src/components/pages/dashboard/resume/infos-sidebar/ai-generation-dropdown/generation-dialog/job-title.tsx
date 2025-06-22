@@ -57,7 +57,6 @@ export const GenerateFromJobTitle = ({
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
       <InputField
-        control={control}
         name="jobTitle"
         label="Título da vaga"
         placeholder="Desenvolvedor Front-end"

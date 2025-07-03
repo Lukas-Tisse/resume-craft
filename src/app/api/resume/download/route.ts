@@ -1,42 +1,35 @@
 import { formatTailwindHTML } from "@/lib/utils";
-
-import puppeteer from "puppeteer";
-import puppeteerCore from "puppeteer-core";
+import puppeteer from "puppeteer-core";
 import chromium from "@sparticuz/chromium";
 
 export const POST = async (request: Request) => {
   try {
-    const body = await request.json();
-
-    const { html, structure } = body;
-
-    if (!html || !structure)
+    const { html, structure } = await request.json();
+    if (!html || !structure) {
       return Response.json(
         { message: "Parâmetros inválidos" },
         { status: 400 }
       );
-
-    let browser = null;
-
-    if (process.env.NODE_ENV === "development") {
-      browser = await puppeteer.launch();
-    } else {
-      browser = await puppeteerCore.launch({
-        args: chromium.args,
-        defaultViewport: chromium.defaultViewport,
-        executablePath: await chromium.executablePath(),
-        headless: chromium.headless,
-      });
     }
 
-    const page = await browser.newPage();
+    const isDev = process.env.NODE_ENV === "development";
+    const launchOpts = isDev
+      ? {}
+      : {
+          args: chromium.args,
+          defaultViewport: chromium.defaultViewport,
+          executablePath: await chromium.executablePath(),
+          headless: chromium.headless,
+        };
 
+    const browser = await puppeteer.launch(launchOpts);
+    const page = await browser.newPage();
     await page.setContent(formatTailwindHTML(html, structure));
 
     // @ts-expect-error
-    const bodyHeight = await page.evaluate(() => {
-      return document.body.scrollHeight + 20;
-    });
+    const bodyHeight = await page.evaluate(
+      () => document.body.scrollHeight + 20
+    );
 
     const pdf = await page.pdf({
       width: "210mm",
@@ -47,9 +40,7 @@ export const POST = async (request: Request) => {
     await browser.close();
 
     return new Response(pdf, {
-      headers: {
-        "Content-type": "application/pdf",
-      },
+      headers: { "Content-Type": "application/pdf" },
     });
   } catch (error) {
     console.error(error);
